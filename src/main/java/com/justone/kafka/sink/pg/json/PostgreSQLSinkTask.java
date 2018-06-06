@@ -52,6 +52,8 @@ import com.justone.json.Element;
 import com.justone.json.Parser;
 import com.justone.json.Path;
 
+import static com.justone.kafka.sink.pg.json.PostgresSQLSinkConnectorConfig.*;
+
 /**
  * Task for PostgreSQL sink connector
  * @author Duncan Pauly
@@ -75,46 +77,6 @@ public class PostgreSQLSinkTask extends SinkTask {
    * Delivery configuration options
    */
   private static final String[] DELIVERY=new String[]{"FASTEST","GUARANTEED","SYNCHRONIZED"};
-  /**
-   * Database host server property key
-   */
-  public static final String HOST_CONFIG = "db.host";
-  /**
-   * Database name property key
-   */
-  public static final String DATABASE_CONFIG = "db.database";
-  /**
-   * Database username property key
-   */
-  public static final String USER_CONFIG = "db.username";
-  /**
-   * Database password property key
-   */
-  public static final String PASSWORD_CONFIG = "db.password";
-  /**
-   * Schema name property key
-   */
-  public static final String SCHEMA_CONFIG = "db.schema";
-  /**
-   * Table name property key
-   */
-  public static final String TABLE_CONFIG = "db.table";
-  /**
-   * Table column names property key
-   */
-  public static final String COLUMN_CONFIG = "db.columns";
-  /**
-   * Delivery semantics property key
-   */
-  public static final String DELIVERY_CONFIG = "db.delivery";
-  /**
-   * JSON parse paths property key
-   */
-  public static final String PARSE_CONFIG = "db.json.parse";
-  /**
-   * Buffer size property key
-   */
-  public static final String BUFFER_CONFIG = "db.buffer.size";
   /**
    * Synchronise command to start sink task
    */
@@ -201,7 +163,8 @@ public class PostgreSQLSinkTask extends SinkTask {
   public void start(Map<String, String> props) throws ConnectException {
     
     fLog.trace("Starting");
-    
+
+
     /* log connector configuration */
     String configuration="\n";
     configuration=configuration+'\t'+HOST_CONFIG+':'+props.get(HOST_CONFIG)+'\n';
@@ -218,7 +181,7 @@ public class PostgreSQLSinkTask extends SinkTask {
     
     try {
 
-      /* get configuration properties */
+       /*get configuration properties*/
       String host=props.get(HOST_CONFIG);//database host
       String database=props.get(DATABASE_CONFIG);//database name
       String username=props.get(USER_CONFIG);//database username
@@ -228,7 +191,7 @@ public class PostgreSQLSinkTask extends SinkTask {
       String columnList=props.get(COLUMN_CONFIG);//columns to sink to
       Integer bufferSize=Integer.parseInt(props.get(BUFFER_CONFIG));//task buffer size
       String pathList=props.get(PARSE_CONFIG);//list if JSON parse paths
-      String delivery=props.get(DELIVERY_CONFIG);//delivery semantics required 
+      String delivery=props.get(DELIVERY_CONFIG);//delivery semantics required
 
       /* validate configuration */
       if (database==null) throw new ConnectException("Database not configured");//database name is mandatory

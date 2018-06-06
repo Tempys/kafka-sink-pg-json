@@ -29,6 +29,8 @@ package com.justone.kafka.sink.pg.json;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.connect.connector.ConnectorContext;
 import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.sink.SinkConnector;
@@ -49,7 +51,12 @@ public class PostgreSQLSinkConnector extends SinkConnector {
    * Configuration properties for the connector
    */
   private Map<String,String> fProperties;
-  
+
+  @Override
+  public ConfigDef config() {
+    return PostgresSQLSinkConnectorConfig.conf();
+  }
+
   /**
    * Returns version of the connector
    * @return version
@@ -87,7 +94,7 @@ public class PostgreSQLSinkConnector extends SinkConnector {
    */
   @Override
   public void start(Map<String, String> props) {
-    
+    new PostgresSQLSinkConnectorConfig(props);
     fProperties=props;//set connector configuration properties
     
   }//start()
